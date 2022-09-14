@@ -12,7 +12,7 @@ const initialState = {
 //     title: '',
 //     body: '',
 //     date: 123456,
-//     imageUrl: []
+//     imagesUrl: []
 // }
 
 export const noteSlice = createSlice({
@@ -25,12 +25,14 @@ export const noteSlice = createSlice({
     },
     setActiveNote: (state, {payload}) => {
         state.activeNote = payload;
+        state.messageSaved = '';
     },
     setNotes: (state, {payload}) => {
       state.notes = payload;
     },
     startSaving: (state) => {
         state.isSaving = true;
+        state.messageSaved = '';
     },
     updateNote: (state, {payload}) => {
       state.notes = state.notes.map( note => {
@@ -38,6 +40,17 @@ export const noteSlice = createSlice({
         return note
       })  
       state.isSaving = false;
+      state.messageSaved = `${payload.title}, Actualizada correctamente`;
+    },
+    setPhotosToActiveNote: (state, {payload}) => {
+      state.activeNote.imagesUrls = [ ...state.activeNote.imagesUrls, ...payload ];
+      state.isSaving = false;
+    },
+    clearNotesLogout: (state)=>{
+      state.isSaving = false;
+      state.messageSaved = '';
+      state.notes = [];
+      state.activeNote = null;
     },
     deleteNoteById: (state) => {},
   },
@@ -50,6 +63,8 @@ export const {
   startSaving,
   updateNote,
   deleteNoteById,
+  setPhotosToActiveNote,
+  clearNotesLogout,
 } = noteSlice.actions;
 
 export default noteSlice.reducer;
