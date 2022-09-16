@@ -52,7 +52,11 @@ export const noteSlice = createSlice({
       state.notes = [];
       state.activeNote = null;
     },
-    deleteNoteById: (state) => {},
+    deleteNoteById: (state, {payload}) => {
+      state.notes = state.notes.filter(note => note.id !== payload);
+      state.activeNote = null;
+      state.isSaving = false;
+    },
   },
 });
 
